@@ -60,11 +60,11 @@ router.put('/update-note/:id', fetchuser, async (req, res) => {
   // find the note to be updated using the id parameter in the URL
   let note = await Notes.findById(req.params.id);  // this is how we get the note that is to be updated
   if(!note) {
-     return res.status(404).send('note not found');
+     return res.status(404).json({error: 'note not found'});
   }
-  console.log(note);
+  
   if(note.user.toString() !== req.user.id) {
-    return res.status(401).send('you can only edit your notes. shared notes coming soon!');
+    return res.status(401).json({error: 'you can only edit your notes. shared notes coming soon!'});
   }
 
   note = await Notes.findByIdAndUpdate(req.params.id, {$set: newNote}, {new: true});
@@ -72,6 +72,28 @@ router.put('/update-note/:id', fetchuser, async (req, res) => {
   res.json(note);
   } catch(err) {
     console.error('ERROR: ', err.message);
+    res.status(500).send('internal server error');
+  }
+});
+
+// ROUTE4 - deleting a note in user's account. REQUIRES LOGGING IN
+router.delete('/delete-note/:id', fetchuser, async (req, res) => {
+  try {
+    const { title, descr } = req.body;
+
+    let note = await Notes.findById(req.params.id);
+    if(!note) {
+      return res.status(404).json({error: 'note not found.'});
+    }
+
+    if(note.user.toString() !== req.user.id) {
+      return res.status(401).json({error: 'you can delete only your own notes.'});
+    }
+
+    note = await Notes.findByIdAndDelete(req.params.id);
+    res.json(`${note.title} has been successfully deleted.`);
+  } catch(err) {
+    console.log('ERROR: ', err.message);
     res.status(500).send('internal server error');
   }
 });
