@@ -14,7 +14,7 @@ const fetchuser = (req, res, next) => {
     next();
   } catch(err) {
     console.error('ERROR: ', err.message);
-    res.status(500).send('internal server error'); 
+    res.status(401).json({error: 'invalid token'}); 
   }
 };
 
