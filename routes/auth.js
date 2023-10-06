@@ -48,7 +48,7 @@ router.post('/onboarding', [
     res.json({ authToken });
   } catch(err) {
     console.error('ERROR: ', err.message);
-    res.send(500).send('internal server error');
+    res.status(500).send('internal server error');
   }
 });
 

@@ -19,8 +19,8 @@ router.get('/fetch-notes', fetchuser, async (req, res) => {
 
 // ROUTE2 - adding a new note into user's account. REQUIRES LOGGING IN
 router.post('/add-note', fetchuser, [
-  body('title', 'enter a title').exists(),
-  body('descr', 'please enter a desciption; it will be helpful for you 😁').exists()
+  body('title', 'enter a title').isLength({min: 1}),
+  body('descr', 'please enter a desciption; it will be helpful for you 😁').isLength({min: 1})
 ], async (req, res) => {
   // if there are any errors, return a `Bad request!` and the errors
   const errors = validationResult(req);
@@ -40,7 +40,7 @@ router.post('/add-note', fetchuser, [
 
     res.json(savedNote);
   } catch(err) {
-    console.error('ERROR: ', err.message);
+    console.error('ERROR: ', err);
     res.status(500).send('internal sever error');
   }
 });
