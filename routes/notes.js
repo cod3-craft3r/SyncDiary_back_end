@@ -19,8 +19,8 @@ router.get('/fetch-notes', fetchuser, async (req, res) => {
 
 // ROUTE2 - adding a new note into user's account. REQUIRES LOGGING IN
 router.post('/add-note', fetchuser, [
-  body('title', 'enter a title').isLength({min: 1}),
-  body('descr', 'please enter a desciption; it will be helpful for you 😁').isLength({min: 1})
+  body('title', 'please enter a title for easy lookup').isLength({min: 1}),
+  body('descr', 'please enter a description; it will be helpful for you 😁').isLength({min: 1})
 ], async (req, res) => {
   // if there are any errors, return a `Bad request!` and the errors
   const errors = validationResult(req);
