@@ -25,7 +25,7 @@ router.post('/onboarding', [
     let user = await User.findOne({email: req.body.email});
 
     if(user) {
-      return res.status(400).json({error: 'sowwy! a user with same email already exists.'})
+      return res.status(400).json({errors: [{msg: 'sowwy! a user with same email already exists.'}]})
     }
 
     const salt = await bcrypt.genSalt(10);
