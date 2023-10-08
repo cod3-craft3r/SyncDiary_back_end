@@ -33,7 +33,7 @@ router.post('/add-note', fetchuser, [
       user: req.user.id,
       title: req.body.title,
       descr: req.body.descr,
-      tag: req.body.tag
+      tag: req.body.tag ? req.body.tag : 'General'
     });
 
     const savedNote = await note.save();
