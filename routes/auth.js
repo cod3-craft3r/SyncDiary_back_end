@@ -68,12 +68,12 @@ router.post('/login', [
   try {
     let user = await User.findOne({email});
     if(!user) {
-      return res.status(400).json({error: 'sowwy! these credentials are not correct.'});
+      return res.status(400).json({errors: [{msg: 'sowwy! these credentials are not correct.'}]});
     }
 
     const comparedPassword = await bcrypt.compare(password, user.password);
     if(!comparedPassword) {
-      return res.status(400).json({error: 'sowwy! these credentials are not correct.'});
+      return res.status(400).json({errors: [{msg: 'sowwy! these credentials are not correct.'}]});
     }
 
     const payload = {
